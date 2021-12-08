@@ -57,4 +57,5 @@ output_list = list(output_data)
 sheet = pd.DataFrame(output_list)
 
 sheet.to_csv('vertices.csv', index = False)
+
 #Will is practicing commit

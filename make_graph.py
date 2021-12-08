@@ -10,3 +10,5 @@ ia = IMDb()
 matrix = ia.get_movie('0133093')
 for item in matrix['cast']:
     print(item)
+
+
