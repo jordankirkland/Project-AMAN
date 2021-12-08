@@ -8,6 +8,5 @@ ia = IMDb()
 
 # Read in each movie and use imdbpy to access the actor lists?
 matrix = ia.get_movie('0133093')
-matrix.infoset2keys
 for item in matrix['cast']:
     print(item)
