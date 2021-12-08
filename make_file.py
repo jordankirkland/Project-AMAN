@@ -2,7 +2,6 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import imdb
-from Actor import Actor
 #import omdb
 ia = imdb.IMDb()
 
@@ -42,4 +41,6 @@ for ID in movieIDs:
 # Should make a basic column sheet, still need to think about how to handle duplicate actors though, maybe through 
 # 2d array of movies? Though that may require a map to reaccess the actor with relatively fast time.
 sheet = pd.DataFrame({'Actor': actors, 'Movies Featured': movies})
+
+sheet.to_csv('vertices.csv', index = False)
 #Will is practicing commit
