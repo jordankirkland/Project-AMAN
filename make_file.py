@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import imdb
+import omdb
 ia = imdb.IMDb()
 
 url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_date=1950-01-01,2021-12-31&languages=en&view=simple&count=250'
@@ -26,9 +27,13 @@ for blocks in page_data:
 
 
 movies = []
+i = 1
 for ID in movieIDs:
     movie = ia.get_movie(ID)
-    print(movie)
+    for actor in movie['cast']:
+        print(actor)
+        print(i)
+        i += 1
 
 
 #Will is practicing commit
