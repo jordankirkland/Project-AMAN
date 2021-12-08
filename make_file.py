@@ -63,7 +63,7 @@ for ID in movieIDs:
     outputIndex += 1
 
     # Once the number of unique actors exceeds 100,000, stop adding actors
-    if len(uniqueActors) >= 100:
+    if len(uniqueActors) >= 100000:
         break
 
 with open('vertices.csv', 'w', newline='') as file:
