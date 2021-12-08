@@ -29,3 +29,6 @@ movies = []
 for ID in movieIDs:
     movie = ia.get_movie(ID)
     print(movie)
+
+
+#Will is practicing commit
