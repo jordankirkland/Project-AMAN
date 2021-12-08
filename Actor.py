@@ -5,5 +5,5 @@ class Actor:
         
         # Map of actors costarring with. Value is a shared movie
         self.actors = {}
-        self.movies = [movie]
+        self.movies = [movie]        
 
