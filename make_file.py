@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import imdb
+from Actor import Actor
 #import omdb
 ia = imdb.IMDb()
 
@@ -13,6 +14,9 @@ soup = BeautifulSoup(response.content, 'html.parser')
 # print(soup)
 
 movieIDs = []
+movies = []
+actors = []
+
 
 page_data = soup.findAll('div', attrs={'class': 'lister-item mode-simple'})
 
@@ -26,14 +30,16 @@ for blocks in page_data:
     movieIDs.append(movieID)
 
 
-movies = []
 i = 1
 for ID in movieIDs:
     movie = ia.get_movie(ID)
     for actor in movie['cast']:
-        print(actor)
+        actors.append(actor)
+        movies.append(movie)    
         print(i)
         i += 1
 
-
+# Should make a basic column sheet, still need to think about how to handle duplicate actors though, maybe through 
+# 2d array of movies? Though that may require a map to reaccess the actor with relatively fast time.
+sheet = pd.DataFrame({'Actor': actors, 'Movies Featured': movies})
 #Will is practicing commit
