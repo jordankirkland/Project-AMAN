@@ -5,7 +5,7 @@ pd.read_csv("marvel.csv")
 
 graph = {}
 
-#for loop to iterate through each line of the file
+#for loop to iterate through each line of the file, 
 
 
 
