@@ -1,9 +1,12 @@
+import pandas as pd
 from imdb import IMDb 
-ia = IMDb()
 
+pd.read_csv("marvel.csv")
 
-# Function get_movies() using beautiful soup and the url to scrape 
-# movie names from our search and store them in a .txt file
+graph = {}
+
+#for loop to iterate through each line of the file
+
 
 
 # Read in each movie and use imdbpy to access the actor lists?
