@@ -34,6 +34,7 @@ for ID in movieIDs:
     movie = ia.get_movie(ID)
     try:
         movie['cast']
+        movie['title']
     except KeyError:
         error = True
 
