@@ -5,7 +5,7 @@ import imdb
 #import omdb
 ia = imdb.IMDb()
 
-url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_date=1950-01-01,2021-12-31&languages=en&view=simple&count=250'
+url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie,tv_series,tv_miniseries&release_date=,2021-11-01&plot=marvel&view=simple&count=250'
 # 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_date=1950-01-01,2021-12-31&languages=en&view=simple&count=250&start=251&ref_=adv_nxt'
 # 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_date=1950-01-01,2021-12-31&languages=en&view=simple&count=250&start=501&ref_=adv_nxt'
 response = requests.get(url)
@@ -13,7 +13,6 @@ soup = BeautifulSoup(response.content, 'html.parser')
 # print(soup)
 
 movieIDs = []
-movies = []
 actors = {}
 
 page_data = soup.findAll('div', attrs={'class': 'lister-item mode-simple'})
@@ -29,9 +28,21 @@ for blocks in page_data:
 
 
 i = 1
+error = False
 for ID in movieIDs:
+    # getting the movie from the respective ID and checking if there is a cast
     movie = ia.get_movie(ID)
-    movies.append(movie['title'])
+    try:
+        movie['cast']
+    except KeyError:
+        error = True
+
+    # Throws an error if there is no cast and skips adding the cast to the dict
+    if error:
+        error = False
+        continue
+
+    # Adds the cast to the dict as an associated array
     actors[movie['title']] = []
     for actor in movie['cast']:
         actors[movie['title']].append(actor['name'])
