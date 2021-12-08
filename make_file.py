@@ -27,7 +27,7 @@ for blocks in page_data:
     movieIDs.append(movieID)
 
 
-i = 1
+uniqueActors = set()
 error = False
 for ID in movieIDs:
     # getting the movie from the respective ID and checking if there is a cast
@@ -42,12 +42,15 @@ for ID in movieIDs:
         error = False
         continue
 
-    # Adds the cast to the dict as an associated array
+    # Adds the cast to the dict as an associated array and a set to track the number of unique actors
     actors[movie['title']] = []
     for actor in movie['cast']:
         actors[movie['title']].append(actor['name'])
-        print(i)
-        i += 1
+        uniqueActors.add(actor['name'])
+
+    # Once the number of unique actors exceeds 100,000, stop adding actors
+    if len(uniqueActors) >= 100000:
+        break
 
 output_data = actors.items()
 output_list = list(output_data)
