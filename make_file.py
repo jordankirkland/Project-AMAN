@@ -31,7 +31,7 @@ def generateIDs(pageUrl):
 #generates ids for 2000 movies
 generateIDs(url)
 pageStart = 251
-while (pageStart < 500):
+while (pageStart < 20000):
     url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_date=1950-01-01,2021-11-01&languages=en&view=simple&count=250&start=' + str(pageStart) + '&ref_=adv_nxt'
     generateIDs(url)
     pageStart += 250
