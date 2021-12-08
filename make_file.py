@@ -14,8 +14,7 @@ soup = BeautifulSoup(response.content, 'html.parser')
 
 movieIDs = []
 movies = []
-actors = []
-
+actors = {}
 
 page_data = soup.findAll('div', attrs={'class': 'lister-item mode-simple'})
 
@@ -32,15 +31,19 @@ for blocks in page_data:
 i = 1
 for ID in movieIDs:
     movie = ia.get_movie(ID)
+    movies.append(movie['title'])
+    actors[movie['title']] = []
     for actor in movie['cast']:
-        actors.append(actor)
-        movies.append(movie)    
+        actors[movie['title']].append(actor['name'])
         print(i)
         i += 1
 
+output_data = actors.items()
+output_list = list(output_data)
+
 # Should make a basic column sheet, still need to think about how to handle duplicate actors though, maybe through 
 # 2d array of movies? Though that may require a map to reaccess the actor with relatively fast time.
-sheet = pd.DataFrame({'Actor': actors, 'Movies Featured': movies})
+sheet = pd.DataFrame(output_list)
 
 sheet.to_csv('vertices.csv', index = False)
 #Will is practicing commit
