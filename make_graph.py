@@ -2,6 +2,7 @@ import csv
 from Actor import Actor
 from imdb import IMDb
 from queue import PriorityQueue
+from collections import defaultdict
 import heapq as heap
 
 class Graph:
@@ -67,7 +68,7 @@ class Graph:
             visitedVerts.add(vert)
 
             #loop through the poped's adj actors (costars)
-            for costar in startActor.items():
+            for costar in startActor.actors:
 
                 #if they havent been visited and have a lower minimum cost, add to parent map
                 if costar in visitedVerts:
@@ -80,6 +81,13 @@ class Graph:
                     vertsCost[costar] = updatedCost
                     heap.heappush(pq, (updatedCost, costar))
         return pMap, vertsCost
+
+    def BFS(self, startVertex):
+        # change the string pass into the matching Actor object
+        startActor = self.lookUp[startVertex]
+
+        # make a list to track visited
+        visited = [False] * len(self.lookUp)
 
 
 
