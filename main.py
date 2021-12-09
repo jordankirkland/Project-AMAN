@@ -6,17 +6,18 @@ print("Graph initialized!")
 print("Welcome to Project-AMAN.")
 
 while True:
-    print("1. Find the degree of separation between two actors with Breadth-First Search.")
+    print("Below are the supported operations:")
+    print("1. Find the degree of separation between two actors and the path that connects them with Breadth-First Search.")
     print("2. Find the degree of separation between two actors and the path that connects them with Dijkstra's.")
     print("3. Find the number of unique actors an actor has been in a movie with and display them.")
     print("4. Find the number of movies an actor has been in and list them.")
     print("5. Exit the program")
-    selection = input("Please select an operation: ")
+    selection = input("Please input your choice: ")
 
     if selection == "1":
         actor1 = input("Please input the first actor's first and last name: ")
         actor2 = input("Please input the second actor's first and last name: ")
-        graph.BFS2(actor1.lower(), actor2.lower())
+        graph.BFS(actor1.lower(), actor2.lower())
     elif selection == "2":
         actor1 = input("Please input the first actor's first and last name: ")
         actor2 = input("Please input the second actor's first and last name: ")
@@ -52,4 +53,4 @@ while True:
         print("Invalid input. Please try again.")
 
         # Printing an extra line to improve readability (NEEDS FIXING IDK)
-        print("\n")
+        print('')
