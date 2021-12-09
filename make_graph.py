@@ -6,6 +6,7 @@ from queue import Queue
 from collections import defaultdict
 import heapq as heap
 
+
 class Graph:
 
     def __init__(self):
@@ -14,7 +15,7 @@ class Graph:
 
         # for loop to iterate through each line of the file,
 
-        with open('verticesFinal.csv', 'r',  encoding='utf-8') as file:
+        with open('verticesFinal.csv', 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
 
             # For each row in the file
@@ -27,38 +28,88 @@ class Graph:
                 for actor in row[1:]:
                     if not actor:
                         break
-                    if actor == '':
-                        break
+
+                    actorLow = actor.lower()
                     # If the actor exists in the graph already, append the movie
                     # and actor to the list and map respectively
-                    if actor.lower() in lookUp:
+                    if actorLow in lookUp:
                         # Appending movie
-                        lookUp[actor.lower()].movies.append(movie)
-                        
+                        lookUp[actorLow].movies.append(movie)
+
                         # Iterating through the list of actors again and adding them to the Actor submap, "actors"
                         for vertice in row[1:]:
-                            if actor == '':
-                                break
+                            # Don't add actor to own 'actors'
+                            if vertice == actor:
+                                continue
                             # When adding the actors to the submap, add them in a pair with both the name and movie "edge"
-                            lookUp[actor.lower()].actors[vertice.lower()] = movie  # does this duplicate actor in their own costars
+                            lookUp[actorLow].actors[
+                                vertice.lower()] = movie  # does this duplicate actor in their own costars
                     else:
                         # Creating an actor
-                        lookUp[actor.lower()] = Actor(actor, movie)
-                        
+                        lookUp[actorLow] = Actor(actor, movie)
+
                         # Iterating through the list of actors again and adding them to the Actor submap, "actors"
                         for vertice in row[1:]:
-                            if actor == '':
-                                break
+                            # Don't add actor to own 'actors'
+                            if vertice == actor:
+                                continue
                             # When adding the actors to the submap, add them in a pair with both the name and movie "edge"
-                            lookUp[actor.lower()].actors[vertice.lower()] = movie
+                            lookUp[actorLow].actors[vertice.lower()] = movie
         self.lookUp = lookUp
 
-    def BFS(self, startVertex, endVertex):
+    # pass in the string name of the desired vertex
+    def Dijkstra(self, startVertex, endVertex):
         # change the string pass into the matching Actor object
         startActor = self.lookUp[startVertex]
+        endActor = self.lookUp[endVertex]
 
-        # make a list to track visited
-        visited = [False] * len(self.lookUp)
+        # make a set to track visited and dictionary for the result paths
+        visitedVerts = set()
+        pMap = {}
+        pq = []
+
+        # this keeps track of the minimum cost to reach verts, the starting node is zero
+        vertsCost = defaultdict(lambda: map)
+        vertsCost[startActor] = 0
+
+        # represents cost to the vertex from the source vertex using a priority queue
+        heap.heappush(pq, (0, startActor))
+
+        while pq:
+            # would normally go to shortest cost, but everything is cost of 1, pop this one
+            _, vert = heap.heappop(pq)
+
+            # if the popped node is the end node, we want to end here
+            if vert is endActor:
+                break
+
+            visitedVerts.add(vert)
+
+            # loop through the poped's adj actors (costars)
+            for costar in startActor.actors:
+
+                # if they havent been visited and have a lower minimum cost, add to parent map
+                if costar in visitedVerts:
+                    continue
+
+                updatedCost = vertsCost[startActor] + 1  # adding one since thats all of the weights
+
+                if vertsCost[costar] > updatedCost:
+                    pMap[costar] = startActor
+                    vertsCost[costar] = updatedCost
+                    heap.heappush(pq, (updatedCost, costar))
+        return pMap
+
+    def printPathDijkstra(self, pMap, endVertex):
+
+        if pMap[endVertex] == -1:
+            print(endVertex)
+            return
+
+        self.printPathDijkstra(pMap, pMap[endVertex])
+        print(endVertex)
+
+    def BFS(self, startVertex, endVertex):
 
         # Pass in start and end vertex as lowercase strings
         startActor = self.lookUp[startVertex.lower()]
@@ -70,30 +121,37 @@ class Graph:
         while q:
             path = q.pop(0)
             vertex = path[-1]
+            # if vertex is not Actor:
+            #     continue
             if vertex == endActor:
                 return path
             elif vertex not in visited:
-                for adjacentActor in vertex.actors: #breaks here, thinks vertex is 'str'? but should be an actor
+                for adjacentActor in vertex.actors:  # breaks here, thinks vertex is 'str'? but should be an actor
                     newPath = list(path)
                     newPath.append(adjacentActor)
                     q.append(adjacentActor)
 
-    def Dijkstra(self, startVertex, endVertex):
-        # Edge case for actor not in the graph
-        try:
-            self.lookUp[startVertex]
-            self.lookUp[endVertex]
-        except KeyError:
-            print("Invalid actor name(s). Please try again.")
-            return
-        
-        # Checking if the start and end vertex are the same (edge case)
-        if startVertex == endVertex:
-            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
-            print([self.lookUp[startVertex].movies[0]])
-            print([self.lookUp[startVertex].name])
-            return
-        
+    def BFS2(self, startVertex, endVertex):
+        # get start and end actor objects
+        start = self.lookUp[startVertex.lower()]
+        end = self.lookUp[endVertex.lower()]
+
+        q = []
+        visited = set()
+        visited.add(start)
+        q.append(start)
+        while q:
+            vertex = q.pop(0)
+            # if vertex is not Actor:
+            #     continue
+            if vertex == end:
+                return vertex.name
+            for costar in vertex.actors:  # same issue.... i... dont understand?
+                if costar not in visited:
+                    visited.add(costar)
+                    q.append(costar)
+
+    def Dijkstra2(self, startVertex, endVertex):
         # Queue for holding all the unique vertices (Actors)
         q = Queue()
 
@@ -105,7 +163,7 @@ class Graph:
 
         # Uninitialized map to make code a little more readable
         neighbors = {}
-        
+
         # Creating a minimum distance variable to prevent running longer than needed
         currentMinimum = 1000000
 
@@ -117,8 +175,8 @@ class Graph:
         q.put(self.lookUp[startVertex])
         currentDistance = 0
 
-        # Initializing the starting vertex distance  
-        distances[startVertex] = (0, startVertex, 'N/A')
+        # Initializing the starting vertex distance
+        distances[startVertex] = (0, startVertex, "N/A")
 
         while not q.empty():
             # Popping the front element, assigning neighbors to the adjacent actors for readability
@@ -149,7 +207,7 @@ class Graph:
                 else:
                     # If the costar is not already in the map, add it to the map with the appropriate tuple of data
                     distances[costar] = (currentDistance + 1, current.name.lower(), neighbors[costar])
-                
+
                 # Check if the costar is in the set of visited vertices. If not, add to the queue and mark as visited
                 if costar not in visited:
                     q.put(self.lookUp[costar])
@@ -169,55 +227,11 @@ class Graph:
             # Updating current actor to the previous actor vertice determined by Dijkstra's above
             currentActor = distances[currentActor][1]
 
-        # Adding the starting actor to the beginning of the path 
+        # Adding the starting actor to the beginning of the path
         actorPath[:0] = [self.lookUp[startVertex].name]
 
         # Printing out the data
-        print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are " + str(distances[endVertex][0]) + " movie(s) apart. Below is the movie path and actor path.")
+        print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are " + str(
+            distances[endVertex][0]) + " movie(s) apart. Below is the movie path and actor path.")
         print(moviePath)
         print(actorPath)
-
-        return
-
-
-#Same code, just older implementation
-# Map of actor name strings to Actor objects
-# lookUp = {}
-
-#for loop to iterate through each line of the file, 
-
-# with open('vertices1.csv', 'r') as file:
-#     reader = csv.reader(file)
-#
-#     # For each row in the file
-#     for row in reader:
-#
-#         # Temp variables for movie
-#         movie = row[0]
-#
-#         # For each actor in the row
-#         for actor in row[1:]:
-#             if not actor:
-#                 break
-#             if actor == '':
-#                 break
-#             # If the actor exists in the graph already, append the movie
-#             # and actor to the list and map respectively
-#             if actor.lower() in lookUp:
-#                 lookUp[actor.lower()].movies.append(movie)
-#                 for vertice in row[1:]:
-#                     if actor == '':
-#                         break
-#                     lookUp[actor.lower()].actors[vertice.lower()] = movie #does this duplicate actor in their own costars
-#             else:
-#                 lookUp[actor.lower()] = Actor(actor, movie)
-#                 for vertice in row[1:]:
-#                     if actor == '':
-#                         break
-#                     lookUp[actor.lower()].actors[vertice.lower()] = movie
-# print("hi")
-# # Read in each movie and use imdbpy to access the actor lists?
-# matrix = ia.get_movie('0133093')
-# for item in matrix['cast']:
-#     print(item)
-
