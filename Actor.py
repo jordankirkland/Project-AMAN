@@ -3,7 +3,9 @@ class Actor:
     def __init__(self, name, movie):
         self.name = name
         
-        # Map of actors costarring with. Value is a shared movie
+        # Map of actors costarring with. Key is the costar's name and value is a shared movie, both strings
         self.actors = {}
-        self.movies = [movie]        
+
+        # List of movies 
+        self.movies = [movie]
 
