@@ -46,9 +46,10 @@ class Graph:
         self.lookUp = lookUp
 
     #pass in the string name of the desired vertex
-    def Dijkstra(self, startVertex):
+    def Dijkstra(self, startVertex, endVertex):
         #change the string pass into the matching Actor object
         startActor = self.lookUp[startVertex]
+        endActor = self.lookUp[endVertex]
 
         #make a set to track visited and dictionary for the result paths
         visitedVerts = set()
@@ -65,6 +66,11 @@ class Graph:
         while pq:
             #would normally go to shortest cost, but everything is cost of 1, pop this one
             _, vert = heap.heappop(pq)
+
+            #if the popped node is the end node, we want to end here
+            if vert is endActor:
+                break
+
             visitedVerts.add(vert)
 
             #loop through the poped's adj actors (costars)
@@ -81,6 +87,18 @@ class Graph:
                     vertsCost[costar] = updatedCost
                     heap.heappush(pq, (updatedCost, costar))
         return pMap, vertsCost
+
+    def printPathDijkstra(self, pMap, endVertex):
+
+        if pMap[endVertex] == -1:
+            print(endVertex)
+            return
+
+        self.printPathDijkstra(pMap, pMap[endVertex])
+        print(endVertex)
+
+
+
 
     def BFS(self, startVertex):
         # change the string pass into the matching Actor object
