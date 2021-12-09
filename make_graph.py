@@ -53,8 +53,9 @@ class Graph:
                             lookUp[actorLow].actors[vertice.lower()] = movie
         self.lookUp = lookUp
 
+    # Pass in both vertexes as all lowercase strings
     def BFS(self, startVertex, endVertex):
-
+        # Edge case for actor not in the graph
         try:
             self.lookUp[startVertex]
             self.lookUp[endVertex]
@@ -62,6 +63,7 @@ class Graph:
             print("Invalid actor name(s). Please try again.")
             return
 
+        # Checking if the start and end vertex are the same (edge case)
         if startVertex == endVertex:
             print(self.lookUp[startVertex].name + " and " + self.lookUp[
                 endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
@@ -69,46 +71,68 @@ class Graph:
             print([self.lookUp[startVertex].name])
             return
 
-        # visited vertices
+        # Visited vertices
         visited = set()
         visited.add(startVertex)
-        # queue of paths to track
+
+        # Queue of paths to track
         q = Queue()
         path = [self.lookUp[startVertex]]
         q.put(path)
 
+        # While the q is not empty
         while q:
+
+            # Pop the first element and store it in path
             path = q.get()
+
+            # Adds the current vertex to the beginning of the generated path
             vertex = path[-1]
+
+            # If the current vertex is itself, call BFSHelper to print the path
             if vertex == self.lookUp[endVertex]:
                 self.BFSHelper(path)
                 return
+
+            # If the vertex has not been visited, iterate through the adjacent actors
             elif vertex not in visited:
-                for adjacentActor in vertex.actors:  # breaks here, thinks vertex is 'str'? but should be an actor
+                for adjacentActor in vertex.actors: 
+                    # Create a new path based on the original one and appending the current actor
                     newPath = list(path)
                     newPath.append(self.lookUp[adjacentActor])
+
+                    # Adding the new path to the queue
                     q.put(newPath)
 
+                # Then add the vertex to the "visited" set
                 visited.add(vertex.name)
 
+    # Helper function to print out the path
     def BFSHelper(self, actors):
+        # Path lists to hold values before printing 
         moviePath = []
         actorPath = []
         movies = []
+
+        # Iterating through actors (passed in path)
         for actor in actors:
+
+            # Adding the actors passed in to actor path
             actorPath.append(actor.name)
 
+            # iterates through the movies in each actor and appends the respective movie to the path
             for movie in actor.movies:
                 if movie in movies:
                     moviePath.append(movie)
                     break
             movies = actor.movies
 
-
+        # Printing out the paths and values
         print(actorPath[0] + " and " + actorPath[-1] + " are " + str(len(actorPath) - 1) + " movie(s) apart. Below is the movie path and actor path.")
         print(moviePath)
         print(actorPath)
 
+    # Pass in the vertices as lowercase strings
     def Dijkstra(self, startVertex, endVertex):
         # Edge case for actor not in the graph
         try:
@@ -140,10 +164,6 @@ class Graph:
 
         # Creating a minimum distance variable to prevent running longer than needed
         currentMinimum = 1000000
-
-        #######   Resizing vector part? ##########
-        # When checking distance, check if actor is added. If it is, compare distance
-        # else compare to max int?
 
         # Initializing the queue with the source Actor and the current distance
         q.put(self.lookUp[startVertex])

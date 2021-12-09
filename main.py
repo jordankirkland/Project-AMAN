@@ -3,7 +3,7 @@ import make_graph
 print("Initiating graph...")
 graph = make_graph.Graph()
 print("Graph initialized!")
-print("Welcome to Project-AMAN.")
+print("Welcome to Project-AMAN, Automated Movie Actor Nexus.")
 
 while True:
     print("Below are the supported operations:")
