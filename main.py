@@ -16,7 +16,7 @@ while True:
     if selection == "1":
         actor1 = input("Please input the first actor's first and last name: ")
         actor2 = input("Please input the second actor's first and last name: ")
-        graph.BFS(actor1.lower(), actor2.lower())
+        graph.BFS2(actor1.lower(), actor2.lower())
     elif selection == "2":
         actor1 = input("Please input the first actor's first and last name: ")
         actor2 = input("Please input the second actor's first and last name: ")

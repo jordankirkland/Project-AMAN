@@ -80,24 +80,35 @@ class Graph:
                     q.append(adjacentActor)
 
     def BFS2(self, startVertex, endVertex):
-        # get start and end actor objects
-        start = self.lookUp[startVertex.lower()]
-        end = self.lookUp[endVertex.lower()]
+        # Edge case for actor not in the graph
+        try:
+            self.lookUp[startVertex]
+            self.lookUp[endVertex]
+        except KeyError:
+            print("Invalid actor name(s). Please try again.")
+            return
+        
+        # Checking if the start and end vertex are the same (edge case)
+        if startVertex == endVertex:
+            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
+            print([self.lookUp[startVertex].movies[0]])
+            print([self.lookUp[startVertex].name])
+            return
 
-        q = []
+        q = Queue()
         visited = set()
-        visited.add(start)
-        q.append(start)
-        while q:
-            vertex = q.pop(0)
-            # if vertex is not Actor:
-            #     continue
-            if vertex == end:
-                return vertex.name
+
+        visited.add(startVertex)
+        q.put(self.lookUp[startVertex])
+        
+        while not q.empty():
+            vertex = q.get()
+            
             for costar in vertex.actors:  # same issue.... i... dont understand?
+                
                 if costar not in visited:
                     visited.add(costar)
-                    q.append(costar)
+                    q.put(self.lookUp[costar])
 
     def Dijkstra(self, startVertex, endVertex):
         # Edge case for actor not in the graph
