@@ -14,7 +14,7 @@ class Graph:
 
         # for loop to iterate through each line of the file,
 
-        with open('verticesFinal.csv', 'r') as file:
+        with open('verticesFinal.csv', 'r',  encoding='utf-8') as file:
             reader = csv.reader(file)
 
             # For each row in the file
