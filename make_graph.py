@@ -13,7 +13,7 @@ class Graph:
 
         # for loop to iterate through each line of the file,
 
-        with open('verticesFinal.csv', 'r', encoding='utf-8') as file:
+        with open('verticesFinal.csv', 'r') as file:
             reader = csv.reader(file)
 
             # For each row in the file
@@ -86,7 +86,7 @@ class Graph:
                     pMap[costar] = startActor
                     vertsCost[costar] = updatedCost
                     heap.heappush(pq, (updatedCost, costar))
-        return pMap, vertsCost
+        return pMap
 
     def printPathDijkstra(self, pMap, endVertex):
 
@@ -98,15 +98,24 @@ class Graph:
         print(endVertex)
 
 
-
-
-    def BFS(self, startVertex):
+    def BFS(self, startVertex, endVertex):
         # change the string pass into the matching Actor object
-        startActor = self.lookUp[startVertex]
+        startActor = self.lookUp[startVertex.lower()]
+        endActor = self.lookUp[endVertex.lower()]
 
-        # make a list to track visited
-        visited = [False] * len(self.lookUp)
+        q = [[startActor]]
+        visited = set()
 
+        while q:
+            path = q.pop(0)
+            vertex = path[-1]
+            if vertex == endActor:
+                return path
+            elif vertex not in visited:
+                for adjacentActor in vertex.actors: #breaks here, thinks vertex is 'str'? but should be an actor
+                    newPath = list(path)
+                    newPath.append(adjacentActor)
+                    q.append(adjacentActor)
 
 
 
