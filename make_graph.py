@@ -67,15 +67,16 @@ class Graph:
             return
 
         if startVertex == endVertex:
-            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
+            print(self.lookUp[startVertex].name + " and " + self.lookUp[
+                endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
             print([self.lookUp[startVertex].movies[0]])
             print([self.lookUp[startVertex].name])
             return
 
-        #visited vertices
+        # visited vertices
         visited = set()
         visited.add(startVertex)
-        #queue of paths to track
+        # queue of paths to track
         q = Queue()
         path = [self.lookUp[startVertex]]
         q.put(path)
@@ -84,14 +85,32 @@ class Graph:
             path = q.get()
             vertex = path[-1]
             if vertex == self.lookUp[endVertex]:
-                return path
+                self.BFSHelper(path)
+                return
             elif vertex not in visited:
                 for adjacentActor in vertex.actors:  # breaks here, thinks vertex is 'str'? but should be an actor
                     newPath = list(path)
                     newPath.append(self.lookUp[adjacentActor])
-                    q.append(newPath)
+                    q.put(newPath)
 
                 visited.add(vertex.name)
+
+    def BFSHelper(self, actors):
+        moviePath = []
+        actorPath = []
+        movies = []
+        for actor in actors:
+            actorPath.append(actor.name)
+
+            for movie in actor.movies:
+                if movie in movies:
+                    moviePath.append(movie)
+            movies = actor.movies
+
+
+        print(actorPath[0] + " and " + actorPath[-1] + " are " + str(len(actorPath) - 1) + " movie(s) apart. Below is the movie path and actor path.")
+        print(moviePath)
+        print(actorPath)
 
     def BFS2(self, startVertex, endVertex):
         # Edge case for actor not in the graph
@@ -101,10 +120,11 @@ class Graph:
         except KeyError:
             print("Invalid actor name(s). Please try again.")
             return
-        
+
         # Checking if the start and end vertex are the same (edge case)
         if startVertex == endVertex:
-            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
+            print(self.lookUp[startVertex].name + " and " + self.lookUp[
+                endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
             print([self.lookUp[startVertex].movies[0]])
             print([self.lookUp[startVertex].name])
             return
@@ -114,12 +134,12 @@ class Graph:
 
         visited.add(startVertex)
         q.put(self.lookUp[startVertex])
-        
+
         while not q.empty():
             vertex = q.get()
-            
+
             for costar in vertex.actors:
-                
+
                 if costar not in visited:
                     visited.add(costar)
                     q.put(self.lookUp[costar])
@@ -132,14 +152,15 @@ class Graph:
         except KeyError:
             print("Invalid actor name(s). Please try again.")
             return
-        
+
         # Checking if the start and end vertex are the same (edge case)
         if startVertex == endVertex:
-            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
+            print(self.lookUp[startVertex].name + " and " + self.lookUp[
+                endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
             print([self.lookUp[startVertex].movies[0]])
             print([self.lookUp[startVertex].name])
             return
-        
+
         # Queue for holding all the unique vertices (Actors)
         q = Queue()
 
@@ -223,5 +244,5 @@ class Graph:
             distances[endVertex][0]) + " movie(s) apart. Below is the movie path and actor path.")
         print(moviePath)
         print(actorPath)
-        
+
         return
