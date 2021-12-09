@@ -59,25 +59,39 @@ class Graph:
 
     def BFS(self, startVertex, endVertex):
 
-        # Pass in start and end vertex as lowercase strings
-        startActor = self.lookUp[startVertex.lower()]
-        endActor = self.lookUp[endVertex.lower()]
+        try:
+            self.lookUp[startVertex]
+            self.lookUp[endVertex]
+        except KeyError:
+            print("Invalid actor name(s). Please try again.")
+            return
 
-        q = [[startActor]]
+        if startVertex == endVertex:
+            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
+            print([self.lookUp[startVertex].movies[0]])
+            print([self.lookUp[startVertex].name])
+            return
+
+        #visited vertices
         visited = set()
+        visited.add(startVertex)
+        #queue of paths to track
+        q = Queue()
+        path = [self.lookUp[startVertex]]
+        q.put(path)
 
         while q:
-            path = q.pop(0)
+            path = q.get()
             vertex = path[-1]
-            # if vertex is not Actor:
-            #     continue
-            if vertex == endActor:
+            if vertex == self.lookUp[endVertex]:
                 return path
             elif vertex not in visited:
                 for adjacentActor in vertex.actors:  # breaks here, thinks vertex is 'str'? but should be an actor
                     newPath = list(path)
-                    newPath.append(adjacentActor)
-                    q.append(adjacentActor)
+                    newPath.append(self.lookUp[adjacentActor])
+                    q.append(newPath)
+
+                visited.add(vertex.name)
 
     def BFS2(self, startVertex, endVertex):
         # Edge case for actor not in the graph
@@ -104,7 +118,7 @@ class Graph:
         while not q.empty():
             vertex = q.get()
             
-            for costar in vertex.actors:  # same issue.... i... dont understand?
+            for costar in vertex.actors:
                 
                 if costar not in visited:
                     visited.add(costar)
