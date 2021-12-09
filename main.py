@@ -52,5 +52,5 @@ while True:
     else:
         print("Invalid input. Please try again.")
 
-        # Printing an extra line to improve readability (NEEDS FIXING IDK)
-        print('')
+    # Printing an extra line to improve readability (NEEDS FIXING IDK)
+    print('\n')

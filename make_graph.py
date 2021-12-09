@@ -97,6 +97,9 @@ class Graph:
             # If the vertex has not been visited, iterate through the adjacent actors
             elif vertex not in visited:
                 for adjacentActor in vertex.actors: 
+                    if adjacentActor == '':
+                        continue
+
                     # Create a new path based on the original one and appending the current actor
                     newPath = list(path)
                     newPath.append(self.lookUp[adjacentActor])
@@ -191,6 +194,9 @@ class Graph:
             # Iterate through the keys in neighbors (the costars of the current actor) (costar is a string)
             for costar in neighbors:
 
+                if costar == '':
+                    continue
+
                 # If the costar is already in the distances map, check to see if the current path is shorter than the saved one
                 if costar in distances:
                     if (distances[costar][0] > (currentDistance + 1)):
@@ -206,6 +212,7 @@ class Graph:
                 if costar not in visited:
                     q.put(self.lookUp[costar])
                     visited.add(costar)
+                        
 
         # Creating a list of the movie path and actor path between the two actors
         actorPath = [self.lookUp[endVertex].name]
