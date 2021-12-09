@@ -12,7 +12,7 @@ class Graph:
 
         # for loop to iterate through each line of the file,
 
-        with open('vertices1.csv', 'r') as file:
+        with open('verticesFinal.csv', 'r') as file:
             reader = csv.reader(file)
 
             # For each row in the file
@@ -87,40 +87,40 @@ class Graph:
 
 #Same code, just older implementation
 # Map of actor name strings to Actor objects
-lookUp = {}
+# lookUp = {}
 
 #for loop to iterate through each line of the file, 
 
-with open('vertices1.csv', 'r') as file:
-    reader = csv.reader(file)
-    
-    # For each row in the file
-    for row in reader:
-
-        # Temp variables for movie
-        movie = row[0]
-
-        # For each actor in the row
-        for actor in row[1:]:
-            if not actor:
-                break
-            if actor == '':
-                break
-            # If the actor exists in the graph already, append the movie
-            # and actor to the list and map respectively
-            if actor.lower() in lookUp:
-                lookUp[actor.lower()].movies.append(movie)
-                for vertice in row[1:]:
-                    if actor == '':
-                        break
-                    lookUp[actor.lower()].actors[vertice.lower()] = movie #does this duplicate actor in their own costars
-            else:
-                lookUp[actor.lower()] = Actor(actor, movie)
-                for vertice in row[1:]:
-                    if actor == '':
-                        break
-                    lookUp[actor.lower()].actors[vertice.lower()] = movie
-print("hi")
+# with open('vertices1.csv', 'r') as file:
+#     reader = csv.reader(file)
+#
+#     # For each row in the file
+#     for row in reader:
+#
+#         # Temp variables for movie
+#         movie = row[0]
+#
+#         # For each actor in the row
+#         for actor in row[1:]:
+#             if not actor:
+#                 break
+#             if actor == '':
+#                 break
+#             # If the actor exists in the graph already, append the movie
+#             # and actor to the list and map respectively
+#             if actor.lower() in lookUp:
+#                 lookUp[actor.lower()].movies.append(movie)
+#                 for vertice in row[1:]:
+#                     if actor == '':
+#                         break
+#                     lookUp[actor.lower()].actors[vertice.lower()] = movie #does this duplicate actor in their own costars
+#             else:
+#                 lookUp[actor.lower()] = Actor(actor, movie)
+#                 for vertice in row[1:]:
+#                     if actor == '':
+#                         break
+#                     lookUp[actor.lower()].actors[vertice.lower()] = movie
+# print("hi")
 # # Read in each movie and use imdbpy to access the actor lists?
 # matrix = ia.get_movie('0133093')
 # for item in matrix['cast']:
