@@ -45,6 +45,8 @@ while True:
         movies = graph.lookUp[actor.lower()].movies
         print(graph.lookUp[actor.lower()].name + " has been in " + str(len(movies)) + " movie(s). They are listed below:")
         print(movies)
-
+    else:
+        print("Invalid input. Please try again.")
+        
         # Printing an extra line to improve readability (NEEDS FIXING IDK)
         print("\n")
