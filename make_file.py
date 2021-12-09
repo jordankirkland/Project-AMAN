@@ -64,7 +64,7 @@ for ID in movieIDs:
     if len(uniqueActors) >= 100000:
         break
 
-with open('vertices.csv', 'w', newline='') as file:
+with open('verticesFinal.csv', 'w', newline='') as file:
     sheet = csv.writer(file)
     for row in output:
         sheet.writerow(row)
