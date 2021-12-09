@@ -108,38 +108,6 @@ class Graph:
         print(moviePath)
         print(actorPath)
 
-    def BFS2(self, startVertex, endVertex):
-        # Edge case for actor not in the graph
-        try:
-            self.lookUp[startVertex]
-            self.lookUp[endVertex]
-        except KeyError:
-            print("Invalid actor name(s). Please try again.")
-            return
-
-        # Checking if the start and end vertex are the same (edge case)
-        if startVertex == endVertex:
-            print(self.lookUp[startVertex].name + " and " + self.lookUp[
-                endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
-            print([self.lookUp[startVertex].movies[0]])
-            print([self.lookUp[startVertex].name])
-            return
-
-        q = Queue()
-        visited = set()
-
-        visited.add(startVertex)
-        q.put(self.lookUp[startVertex])
-
-        while not q.empty():
-            vertex = q.get()
-
-            for costar in vertex.actors:
-
-                if costar not in visited:
-                    visited.add(costar)
-                    q.put(self.lookUp[costar])
-
     def Dijkstra(self, startVertex, endVertex):
         # Edge case for actor not in the graph
         try:
