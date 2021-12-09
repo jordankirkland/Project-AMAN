@@ -1,11 +1,7 @@
 import csv
-from Actor import Actor
-from imdb import IMDb
-from queue import PriorityQueue
 from queue import Queue
 from collections import defaultdict
-import heapq as heap
-
+from Actor import Actor
 
 class Graph:
 
