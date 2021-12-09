@@ -101,6 +101,7 @@ class Graph:
             for movie in actor.movies:
                 if movie in movies:
                     moviePath.append(movie)
+                    break
             movies = actor.movies
 
 
