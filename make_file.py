@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import imdb
 ia = imdb.IMDb()
 
-# url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie,tv_series,tv_miniseries&release_date=,2021-11-01&plot=marvel&view=simple&count=250'
 url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_date=1950-01-01,2021-11-01&languages=en&view=simple&count=250'
 
 movieIDs = []
