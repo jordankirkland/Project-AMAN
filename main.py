@@ -10,6 +10,7 @@ while True:
     print("2. Find the degree of separation between two actors and the path that connects them with Dijkstra's.")
     print("3. Find the number of unique actors an actor has been in a movie with and display them.")
     print("4. Find the number of movies an actor has been in and list them.")
+    print("5. Exit the program")
     selection = input("Please select an operation: ")
 
     if selection == "1":
@@ -45,8 +46,10 @@ while True:
         movies = graph.lookUp[actor.lower()].movies
         print(graph.lookUp[actor.lower()].name + " has been in " + str(len(movies)) + " movie(s). They are listed below:")
         print(movies)
+    elif selection == "5":
+        break
     else:
         print("Invalid input. Please try again.")
-        
+
         # Printing an extra line to improve readability (NEEDS FIXING IDK)
         print("\n")

@@ -57,58 +57,6 @@ class Graph:
                             lookUp[actorLow].actors[vertice.lower()] = movie
         self.lookUp = lookUp
 
-    # pass in the string name of the desired vertex
-    def Dijkstra(self, startVertex, endVertex):
-        # change the string pass into the matching Actor object
-        startActor = self.lookUp[startVertex]
-        endActor = self.lookUp[endVertex]
-
-        # make a set to track visited and dictionary for the result paths
-        visitedVerts = set()
-        pMap = {}
-        pq = []
-
-        # this keeps track of the minimum cost to reach verts, the starting node is zero
-        vertsCost = defaultdict(lambda: map)
-        vertsCost[startActor] = 0
-
-        # represents cost to the vertex from the source vertex using a priority queue
-        heap.heappush(pq, (0, startActor))
-
-        while pq:
-            # would normally go to shortest cost, but everything is cost of 1, pop this one
-            _, vert = heap.heappop(pq)
-
-            # if the popped node is the end node, we want to end here
-            if vert is endActor:
-                break
-
-            visitedVerts.add(vert)
-
-            # loop through the poped's adj actors (costars)
-            for costar in startActor.actors:
-
-                # if they havent been visited and have a lower minimum cost, add to parent map
-                if costar in visitedVerts:
-                    continue
-
-                updatedCost = vertsCost[startActor] + 1  # adding one since thats all of the weights
-
-                if vertsCost[costar] > updatedCost:
-                    pMap[costar] = startActor
-                    vertsCost[costar] = updatedCost
-                    heap.heappush(pq, (updatedCost, costar))
-        return pMap
-
-    def printPathDijkstra(self, pMap, endVertex):
-
-        if pMap[endVertex] == -1:
-            print(endVertex)
-            return
-
-        self.printPathDijkstra(pMap, pMap[endVertex])
-        print(endVertex)
-
     def BFS(self, startVertex, endVertex):
 
         # Pass in start and end vertex as lowercase strings
@@ -151,7 +99,22 @@ class Graph:
                     visited.add(costar)
                     q.append(costar)
 
-    def Dijkstra2(self, startVertex, endVertex):
+    def Dijkstra(self, startVertex, endVertex):
+        # Edge case for actor not in the graph
+        try:
+            self.lookUp[startVertex]
+            self.lookUp[endVertex]
+        except KeyError:
+            print("Invalid actor name(s). Please try again.")
+            return
+        
+        # Checking if the start and end vertex are the same (edge case)
+        if startVertex == endVertex:
+            print(self.lookUp[startVertex].name + " and " + self.lookUp[endVertex].name + " are 0 movie(s) apart. Below is the movie path and actor path.")
+            print([self.lookUp[startVertex].movies[0]])
+            print([self.lookUp[startVertex].name])
+            return
+        
         # Queue for holding all the unique vertices (Actors)
         q = Queue()
 
@@ -176,7 +139,7 @@ class Graph:
         currentDistance = 0
 
         # Initializing the starting vertex distance
-        distances[startVertex] = (0, startVertex, "N/A")
+        distances[startVertex] = (0, startVertex, 'N/A')
 
         while not q.empty():
             # Popping the front element, assigning neighbors to the adjacent actors for readability
@@ -235,3 +198,5 @@ class Graph:
             distances[endVertex][0]) + " movie(s) apart. Below is the movie path and actor path.")
         print(moviePath)
         print(actorPath)
+        
+        return
