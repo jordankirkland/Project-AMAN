@@ -9,7 +9,6 @@ url = 'https://www.imdb.com/search/title/?title_type=feature,tv_movie&release_da
 movieIDs = []
 output = []
 
-
 #function for generating the ids on a page
 def generateIDs(pageUrl):
     response = requests.get(pageUrl)
